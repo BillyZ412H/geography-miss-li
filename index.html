@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>教师节快乐 · 李洁老师</title>
+    <!-- 引入 CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+    <!-- 背景装饰层 -->
+    <div class="bg-decor">
+        <div class="cloud cloud1"></div>
+        <div class="cloud cloud2"></div>
+        <div class="cloud cloud3"></div>
+        <div class="star star1">✦</div>
+        <div class="star star2">✦</div>
+        <div class="star star3">✦</div>
+        <div class="satellite-bg">🛰️</div>
+    </div>
+
+    <!-- 主容器 -->
+    <div class="container" id="app">
+
+        <!-- 信封包裹 -->
+        <div class="envelope-wrapper" id="envelopeWrapper">
+            <div class="envelope" id="envelope">
+
+                <!-- 信封背面 -->
+                <div class="envelope-back"></div>
+
+                <!-- 信纸 -->
+                <div class="letter" id="letter">
+                    <div class="letter-content">
+                        <!-- 顶部装饰 -->
+                        <div class="letter-header">
+                            <span class="signal-icon">📡</span>
+                            <span class="signal-wave">
+                                <span></span><span></span><span></span>
+                            </span>
+                        </div>
+
+                        <!-- 正文 -->
+                        <div class="letter-body">
+                            <p class="greeting">
+                                <span class="highlight">滴！</span>
+                                李老师请查收您的专属卫星信号📡
+                            </p>
+                            <p class="sub-greeting">
+                                恭喜您捕获 <span class="tag">【高一新粉】</span> 一枚！
+                            </p>
+                            <div class="geo-line">
+                                <span class="geo-icon">🌍</span>
+                                <p>
+                                    在您的课堂上，<br />
+                                    <strong>地球自转</strong>转转走了我的困意，<br />
+                                    <strong>公转</strong>带走了我的烦恼。
+                                </p>
+                            </div>
+                            <div class="geo-line">
+                                <span class="geo-icon">☁️</span>
+                                <p>
+                                    请求您的<strong>知识暖锋</strong>过境，<br />
+                                    在我的小脑瓜里下点 <span class="rain">“智慧雨”</span> 💧
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 底部祝福 -->
+                        <div class="letter-footer">
+                            <p class="bless">
+                                祝集美貌与才华于一身的李老师：<br />
+                                <span class="big-bless">教师节快乐</span>
+                                <span class="forever">永远十八岁！</span>
+                            </p>
+                            <div class="signature">
+                                <span>🌱 您的学生 · 高一新粉林子恒</span>
+                            </div>
+                        </div>
+
+                        <!-- 装饰小元素 -->
+                        <div class="geo-deco deco-earth">🌏</div>
+                        <div class="geo-deco deco-front">☀️</div>
+                        <div class="geo-deco deco-rainbow">🌈</div>
+                    </div>
+                </div>
+
+                <!-- 信封盖（可翻转） -->
+                <div class="envelope-flap" id="envelopeFlap">
+                    <div class="flap-inner">
+                        <div class="seal"></div>
+                        <div class="flap-text">📮</div>
+                    </div>
+                </div>
+
+                <!-- 信封主体（正面装饰） -->
+                <div class="envelope-body">
+                    <div class="envelope-address">
+                        <span class="to">TO：</span>
+                        <span class="name">李洁 老师</span>
+                        <span class="sub">🌍 地理 · 高一</span>
+                    </div>
+                    <div class="envelope-stamp">🎓</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 点击提示 -->
+        <div class="hint" id="hint">✉️ 点击信封打开</div>
+    </div>
+
+    <!-- 引入 JavaScript -->
+    <script src="js/script.js"></script>
+</body>
+</html>

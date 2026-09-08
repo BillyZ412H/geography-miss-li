@@ -1,0 +1,508 @@
+/* ===== 全局重置 ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #f8f0e1 0%, #e8dccc 100%);
+    font-family: 'Segoe UI', 'PingFang SC', Roboto, system-ui, sans-serif;
+    padding: 20px;
+    position: relative;
+    /* 确保页面可以滚动，不固定高度 */
+    overflow-y: auto;
+    /* 移除 min-height 可能造成的固定，但保留 flex 居中 */
+}
+
+/* ===== 背景装饰（与之前相同，但指针事件已禁用） ===== */
+.bg-decor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+.cloud {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+    filter: blur(2px);
+}
+.cloud1 {
+    width: 180px;
+    height: 60px;
+    top: 8%;
+    left: 5%;
+    animation: floatCloud 18s ease-in-out infinite alternate;
+}
+.cloud2 {
+    width: 240px;
+    height: 70px;
+    bottom: 15%;
+    right: 3%;
+    animation: floatCloud 22s ease-in-out infinite alternate-reverse;
+}
+.cloud3 {
+    width: 150px;
+    height: 50px;
+    top: 25%;
+    right: 12%;
+    animation: floatCloud 20s ease-in-out infinite alternate;
+}
+@keyframes floatCloud {
+    0% { transform: translateX(0) scale(1); }
+    100% { transform: translateX(60px) scale(1.05); }
+}
+
+.star {
+    position: absolute;
+    color: #f9e79f;
+    font-size: 1.4rem;
+    opacity: 0.6;
+    animation: twinkle 3s ease-in-out infinite alternate;
+}
+.star1 { top: 12%; left: 20%; animation-delay: 0s; }
+.star2 { top: 30%; right: 8%; animation-delay: 1.2s; font-size: 1.8rem; }
+.star3 { bottom: 25%; left: 8%; animation-delay: 2.4s; font-size: 1.2rem; }
+@keyframes twinkle {
+    0% { opacity: 0.3; transform: scale(0.9); }
+    100% { opacity: 0.9; transform: scale(1.2); }
+}
+
+.satellite-bg {
+    position: absolute;
+    bottom: 5%;
+    left: 10%;
+    font-size: 4rem;
+    opacity: 0.15;
+    transform: rotate(-15deg);
+    animation: driftSat 30s linear infinite;
+}
+@keyframes driftSat {
+    0% { transform: translateX(0) rotate(-15deg); }
+    50% { transform: translateX(40px) rotate(-10deg); }
+    100% { transform: translateX(0) rotate(-15deg); }
+}
+
+/* ===== 容器 ===== */
+.container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    /* 允许容器内部内容撑开，使得页面可以滚动 */
+    padding: 20px 0;
+}
+
+/* ===== 信封包裹 ===== */
+.envelope-wrapper {
+    perspective: 1200px;
+    width: 600px;
+    max-width: 94vw;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    /* 确保点击区域足够 */
+}
+.envelope-wrapper:hover {
+    transform: scale(1.02);
+}
+
+/* ===== 信封 ===== */
+.envelope {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: #fce8d0;
+    border-radius: 18px 18px 12px 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25), 0 8px 16px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.4s ease;
+    transform-style: preserve-3d;
+}
+.envelope.open {
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* 信封背面 */
+.envelope-back {
+    position: absolute;
+    inset: 0;
+    border-radius: 18px 18px 12px 12px;
+    background: #f3d7b5;
+    z-index: 0;
+    box-shadow: inset 0 -6px 0 #dbb58b;
+}
+
+/* ===== 信纸（允许内部滚动） ===== */
+.letter {
+    position: absolute;
+    inset: 12px 16px 18px 16px;
+    z-index: 2;
+    background: #fefcf5;
+    background-image: 
+        linear-gradient(#f0ebe0 1px, transparent 1px);
+    background-size: 100% 28px;
+    border-radius: 8px 8px 6px 6px;
+    padding: 24px 22px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.6s ease;
+    transform-origin: bottom center;
+    transform: translateY(12px) scale(0.96);
+    opacity: 0.85;
+    /* 关键：允许内部滚动，而不会溢出裁剪 */
+    overflow-y: auto;
+    /* 移除 overflow:hidden，改为 auto */
+    /* 美化滚动条（可选） */
+    scrollbar-width: thin;
+    scrollbar-color: #c9ad8a #fefcf5;
+}
+.letter::-webkit-scrollbar {
+    width: 6px;
+}
+.letter::-webkit-scrollbar-track {
+    background: #fefcf5;
+    border-radius: 10px;
+}
+.letter::-webkit-scrollbar-thumb {
+    background: #c9ad8a;
+    border-radius: 10px;
+}
+
+.envelope.open .letter {
+    transform: translateY(-38px) scale(1);
+    opacity: 1;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.letter-content {
+    position: relative;
+    height: 100%; /* 占满信纸区域，与滚动配合 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* 让内容上下分布，但内容多时滚动条出现 */
+    min-height: min-content; /* 保证内容至少撑满 */
+}
+
+/* 顶部 */
+.letter-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.6rem;
+    border-bottom: 2px dashed #e6d8c2;
+    padding-bottom: 10px;
+    margin-bottom: 6px;
+    flex-shrink: 0; /* 防止被压缩 */
+}
+.signal-icon {
+    font-size: 2rem;
+}
+.signal-wave {
+    display: flex;
+    gap: 4px;
+    align-items: flex-end;
+}
+.signal-wave span {
+    display: inline-block;
+    width: 6px;
+    background: #c9ad8a;
+    border-radius: 4px;
+    animation: waveSignal 1.2s ease-in-out infinite alternate;
+}
+.signal-wave span:nth-child(1) { height: 14px; animation-delay: 0s; }
+.signal-wave span:nth-child(2) { height: 24px; animation-delay: 0.2s; }
+.signal-wave span:nth-child(3) { height: 18px; animation-delay: 0.4s; }
+@keyframes waveSignal {
+    0% { transform: scaleY(0.6); }
+    100% { transform: scaleY(1); }
+}
+
+/* 正文 - 可伸缩 */
+.letter-body {
+    flex: 1 0 auto; /* 允许增长，但不会缩小到小于内容 */
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #3d2e1e;
+    padding: 4px 0;
+}
+.greeting {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+.highlight {
+    color: #c0392b;
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+.sub-greeting {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    background: #f7f0e6;
+    display: inline-block;
+    padding: 2px 14px;
+    border-radius: 20px;
+}
+.tag {
+    background: #f1c40f;
+    color: #1e1e1e;
+    padding: 0 8px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+.geo-line {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin: 8px 0;
+}
+.geo-icon {
+    font-size: 1.8rem;
+    line-height: 1.4;
+    min-width: 36px;
+}
+.geo-line p {
+    margin: 0;
+}
+.rain {
+    color: #2980b9;
+    font-weight: 600;
+    background: #d6eaf8;
+    padding: 0 6px;
+    border-radius: 6px;
+}
+
+/* 底部 */
+.letter-footer {
+    border-top: 2px dashed #e6d8c2;
+    padding-top: 12px;
+    text-align: center;
+    flex-shrink: 0; /* 不被压缩 */
+}
+.bless {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+.big-bless {
+    display: block;
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: #c0392b;
+    letter-spacing: 2px;
+    margin: 4px 0;
+    text-shadow: 1px 1px 0 #f1c40f;
+}
+.forever {
+    display: inline-block;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2c3e50;
+    background: #f9e79f;
+    padding: 0 16px;
+    border-radius: 30px;
+}
+.signature {
+    margin-top: 8px;
+    font-size: 0.95rem;
+    color: #5d4c3a;
+    font-style: italic;
+}
+
+/* 装饰小元素 - 位置微调 */
+.geo-deco {
+    position: absolute;
+    font-size: 2.2rem;
+    opacity: 0.15;
+    pointer-events: none;
+}
+.deco-earth {
+    bottom: 18px;
+    right: 12px;
+    font-size: 3rem;
+    opacity: 0.12;
+}
+.deco-front {
+    top: 20px;
+    left: 10px;
+    font-size: 2.8rem;
+    opacity: 0.10;
+}
+.deco-rainbow {
+    bottom: 50px;
+    left: 20px;
+    font-size: 2.4rem;
+    opacity: 0.10;
+}
+
+/* ===== 信封盖 ===== */
+.envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 52%;
+    z-index: 3;
+    transform-origin: top center;
+    transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    transform: rotateX(0deg);
+    border-radius: 18px 18px 0 0;
+    overflow: hidden;
+    backface-visibility: hidden;
+}
+.envelope.open .envelope-flap {
+    transform: rotateX(-180deg);
+}
+.flap-inner {
+    width: 100%;
+    height: 100%;
+    background: #f3d7b5;
+    background: linear-gradient(160deg, #f3d7b5, #e6c4a0);
+    border-radius: 18px 18px 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 -6px 0 #dbb58b;
+    backface-visibility: hidden;
+}
+.seal {
+    width: 50px;
+    height: 50px;
+    background: #c0392b;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f9e79f;
+    font-size: 1.8rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border: 3px solid #f1c40f;
+    margin-bottom: 6px;
+}
+.flap-text {
+    font-size: 2.2rem;
+    opacity: 0.7;
+}
+
+/* ===== 信封主体 ===== */
+.envelope-body {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: 18px 18px 12px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 20px 24px 24px 24px;
+    background: #fce8d0;
+    background-image: repeating-linear-gradient(
+        45deg,
+        rgba(235, 210, 180, 0.1) 0px,
+        rgba(235, 210, 180, 0.1) 4px,
+        transparent 4px,
+        transparent 8px
+    );
+}
+.envelope-address {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+}
+.to {
+    font-size: 0.9rem;
+    color: #7a6048;
+    letter-spacing: 1px;
+}
+.name {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #3d2e1e;
+    line-height: 1.1;
+    text-shadow: 1px 1px 0 #dbb58b;
+}
+.sub {
+    font-size: 1rem;
+    color: #7a6048;
+    background: rgba(255, 255, 255, 0.4);
+    padding: 0 10px;
+    border-radius: 12px;
+    margin-top: 2px;
+}
+.envelope-stamp {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    font-size: 3.2rem;
+    opacity: 0.7;
+    transform: rotate(12deg);
+}
+
+/* ===== 点击提示 ===== */
+.hint {
+    margin-top: 28px;
+    font-size: 1.1rem;
+    color: #5d4c3a;
+    background: rgba(255, 242, 226, 0.8);
+    padding: 10px 28px;
+    border-radius: 40px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    transition: opacity 0.4s ease;
+    user-select: none;
+    pointer-events: none;
+}
+.envelope.open ~ .hint {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.4s, transform 0.4s;
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 640px) {
+    .envelope-wrapper {
+        width: 96vw;
+    }
+    .letter {
+        padding: 16px 14px;
+        inset: 10px 12px 14px 12px;
+    }
+    .letter-body {
+        font-size: 0.95rem;
+    }
+    .greeting {
+        font-size: 1.1rem;
+    }
+    .big-bless {
+        font-size: 1.8rem;
+    }
+    .forever {
+        font-size: 1.1rem;
+    }
+    .name {
+        font-size: 1.8rem;
+    }
+    .envelope-stamp {
+        font-size: 2.6rem;
+        top: 14px;
+        right: 16px;
+    }
+    .geo-deco {
+        display: none;
+    }
+    /* 小屏下滚动条更细 */
+    .letter::-webkit-scrollbar {
+        width: 4px;
+    }
+}
